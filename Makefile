@@ -1,16 +1,19 @@
-all: main
+CXX      := g++
+CXXFLAGS := -std=c++17 -Wall -Wextra -g
+SRCDIR   := src
+SRCS     := $(wildcard $(SRCDIR)/*.cpp)
+OBJS     := $(SRCS:.cpp=.o)
+TARGET   := sistema
 
-CXX = clang++
-override CXXFLAGS += -g -Wall -Werror
+all: $(TARGET)
 
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.cpp' -print | sed -e 's/ /\\ /g')
-HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-main: $(SRCS) $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(SRCS) -o "$@"
-
-main-debug: $(SRCS) $(HEADERS)
-	NIX_HARDENING_ENABLE= $(CXX) $(CXXFLAGS) -O0  $(SRCS) -o "$@"
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f main main-debug
+	rm -f $(OBJS) $(TARGET)
+
+.PHONY: all clean
