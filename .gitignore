@@ -1,0 +1,13 @@
+# Binários e objetos
+*.o
+*.out
+*.exe
+*.a
+*.so
+
+# Build
+build/
+bin/
+
+# Sistema
+.DS_Store
